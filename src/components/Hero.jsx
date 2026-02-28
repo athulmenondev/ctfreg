@@ -427,11 +427,11 @@ export default function Hero({ isInitializing, onInitialize }) {
       <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-10 mb-10">
         <div className="hero-meta flex items-center gap-2.5 opacity-0">
           <div className="w-2 h-2 bg-gold/50 rounded-full" />
-          <span className="text-xs sm:text-sm font-mono tracking-[3px] text-white/35 uppercase">CSE Department</span>
+          <span className="text-xs sm:text-sm font-mono tracking-[3px] text-white/35 uppercase">STACS</span>
         </div>
         <div className="hero-meta flex items-center gap-2.5 opacity-0">
           <div className="w-2 h-2 bg-cyber/50 rounded-full" />
-          <span className="text-xs sm:text-sm font-mono tracking-[3px] text-white/35 uppercase">Solasta Fest</span>
+          <span className="text-xs sm:text-sm font-mono tracking-[3px] text-white/35 uppercase">Solasta TechFest</span>
         </div>
         <div className="hero-meta flex items-center gap-2.5 opacity-0">
           <div className="w-2 h-2 bg-neon-green/50 rounded-full" />
