@@ -189,7 +189,7 @@ export default function RegistrationForm({ onSuccess, isUnfolding }) {
     formData.append('paymentScreenshot', form.paymentScreenshot)
 
     try {
-      const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
+      const BASE_URL = import.meta.env.VITE_API_URL || 'https://ctfreg-backend.onrender.com'
       const response = await fetch(`${BASE_URL}/api/register`, {
         method: 'POST',
         body: formData,
