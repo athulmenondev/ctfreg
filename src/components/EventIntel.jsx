@@ -1,498 +1,402 @@
 import { useEffect, useRef, useState } from "react"
 
+const CYAN = "#00f5e4"
+const CYAN_DIM = "rgba(0,245,228,0.15)"
+const CYAN_GLOW = "rgba(0,245,228,0.08)"
+const CYAN_BORDER = "rgba(0,245,228,0.35)"
+const CYAN_TEXT_DIM = "rgba(0,245,228,0.45)"
+
 const intelData = [
   {
     id: "01",
     label: "JEOPARDY",
     title: "Multi-Domain Challenges",
-    desc: "A diverse gauntlet spanning Web, Crypto, Pwn, and OSINT. Every discipline tested.",
-    color: "#FF2D20",
-    stat: "4 DOMAINS",
+    desc: "A diverse gauntlet spanning Web, Crypto, Pwn, and OSINT.",
+    icon: "⬡",
   },
   {
     id: "02",
     label: "A/D",
     title: "Attack-Defense",
-    desc: "Real-time service hardening vs active opponent exploitation. No room to breathe.",
-    color: "#FF2D20",
-    stat: "LIVE OPS",
+    desc: "Real-time service hardening vs active opponent exploitation.",
+    icon: "◈",
   },
   {
     id: "03",
     label: "REWARDS",
     title: "Prizes & Recognition",
-    desc: "Exclusive certifications and a share of the global prize pool. Earn your rank.",
-    color: "#FF2D20",
-    stat: "TOP POOL",
+    desc: "Exclusive certifications and a share of the global prize pool.",
+    icon: "◎",
   },
   {
     id: "04",
     label: "SCHEDULE",
     title: "24-Hour Intensive",
-    desc: "A non-stop marathon from zero-hour to final leaderboard lock. Endurance is a skill.",
-    color: "#FF2D20",
-    stat: "24 HRS",
+    desc: "A non-stop marathon from zero-hour to final leaderboard lock.",
+    icon: "◷",
   },
 ]
 
-function useAnimateIn(ref) {
-  useEffect(() => {
-    if (!ref.current) return
-    const els = ref.current.querySelectorAll("[data-animate]")
-    els.forEach((el, i) => {
-      el.style.opacity = "0"
-      el.style.transform = "translateY(24px)"
-      el.style.transition = `opacity 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 90}ms, transform 0.9s cubic-bezier(0.16,1,0.3,1) ${i * 90}ms`
-      requestAnimationFrame(() => {
-        setTimeout(() => {
-          el.style.opacity = "1"
-          el.style.transform = "translateY(0)"
-        }, 80)
-      })
-    })
-  }, [])
-}
-
-function Card({ item, index }) {
-  const [hovered, setHovered] = useState(false)
-  return (
-    <div
-      data-animate
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        borderLeft: hovered ? "3px solid #FF2D20" : "3px solid #222",
-        background: hovered ? "#0d0d0d" : "transparent",
-        transition: "all 0.35s cubic-bezier(0.16,1,0.3,1)",
-        cursor: "default",
-      }}
-      className="group relative p-8 flex flex-col gap-6"
-    >
-      {/* Top row */}
-      <div className="flex items-start justify-between">
-        <span
-          style={{
-            fontFamily: "'Courier New', monospace",
-            fontSize: "10px",
-            letterSpacing: "0.35em",
-            color: hovered ? "#FF2D20" : "#444",
-            transition: "color 0.3s",
-          }}
-        >
-          {item.label}
-        </span>
-        <span
-          style={{
-            fontFamily: "'Courier New', monospace",
-            fontSize: "10px",
-            color: "#333",
-            letterSpacing: "0.2em",
-          }}
-        >
-          #{item.id}
-        </span>
-      </div>
-
-      {/* Stat number */}
-      <div
-        style={{
-          fontFamily: "'Georgia', serif",
-          fontSize: "clamp(2.2rem, 4vw, 3.5rem)",
-          fontWeight: "900",
-          fontStyle: "italic",
-          color: hovered ? "#FF2D20" : "#1a1a1a",
-          lineHeight: 1,
-          transition: "color 0.4s",
-          letterSpacing: "-0.03em",
-        }}
-      >
-        {item.stat}
-      </div>
-
-      {/* Divider */}
-      <div style={{ width: "100%", height: "1px", background: "#1c1c1c" }} />
-
-      {/* Title */}
-      <h3
-        style={{
-          fontFamily: "'Georgia', serif",
-          fontSize: "1.1rem",
-          fontWeight: "700",
-          color: "#e8e8e8",
-          lineHeight: 1.3,
-          letterSpacing: "-0.01em",
-        }}
-      >
-        {item.title}
-      </h3>
-
-      {/* Desc */}
-      <p
-        style={{
-          fontFamily: "'Courier New', monospace",
-          fontSize: "0.72rem",
-          color: hovered ? "#888" : "#444",
-          lineHeight: 1.9,
-          transition: "color 0.3s",
-          letterSpacing: "0.02em",
-        }}
-      >
-        {item.desc}
-      </p>
-
-      {/* Arrow indicator */}
-      <div
-        style={{
-          fontFamily: "'Courier New', monospace",
-          fontSize: "10px",
-          color: hovered ? "#FF2D20" : "transparent",
-          transition: "color 0.3s",
-          letterSpacing: "0.3em",
-        }}
-      >
-        READ MORE →
-      </div>
-    </div>
-  )
-}
-
 export default function EventIntel() {
   const containerRef = useRef(null)
-  useAnimateIn(containerRef)
+
+  useEffect(() => {
+    if (!containerRef.current) return
+    const els = containerRef.current.querySelectorAll("[data-animate]")
+    els.forEach((el) => {
+      const delay = parseInt(el.dataset.delay || 0)
+      const type = el.dataset.animate
+      el.style.opacity = "0"
+      el.style.transform = type === "scale" ? "scale(0.94)" : "translateY(22px)"
+      setTimeout(() => {
+        el.style.transition =
+          "opacity 0.85s cubic-bezier(0.16,1,0.3,1), transform 0.85s cubic-bezier(0.16,1,0.3,1)"
+        el.style.opacity = "1"
+        el.style.transform = type === "scale" ? "scale(1)" : "translateY(0)"
+      }, delay)
+    })
+  }, [])
 
   return (
     <section
       ref={containerRef}
       style={{
-        background: "#050505",
-        minHeight: "100vh",
-        padding: "0",
-        overflowX: "hidden",
         position: "relative",
+        minHeight: "100vh",
+        background: "#050a0a",
+        padding: "7rem 1.5rem",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        overflow: "hidden",
+        fontFamily: "'Courier New', Courier, monospace",
       }}
     >
-      {/* Noise texture overlay */}
-      <div
-        style={{
-          position: "absolute",
-          inset: 0,
-          opacity: 0.03,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
-          backgroundSize: "256px",
-          pointerEvents: "none",
-          zIndex: 1,
-        }}
-      />
+      {/* Scanline overlay */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none", zIndex: 1,
+        backgroundImage: "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.12) 2px, rgba(0,0,0,0.12) 4px)",
+      }} />
 
-      <div style={{ position: "relative", zIndex: 2 }}>
+      {/* Grid */}
+      <div style={{
+        position: "absolute", inset: 0, pointerEvents: "none",
+        opacity: 0.04,
+        backgroundImage: `linear-gradient(${CYAN} 1px, transparent 1px), linear-gradient(90deg, ${CYAN} 1px, transparent 1px)`,
+        backgroundSize: "48px 48px",
+      }} />
 
-        {/* ── MASTHEAD ── */}
-        <div
-          style={{
-            borderBottom: "1px solid #1a1a1a",
-            padding: "1.2rem 3rem",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <span
-            data-animate
-            style={{
-              fontFamily: "'Courier New', monospace",
-              fontSize: "9px",
-              letterSpacing: "0.45em",
-              color: "#333",
-              textTransform: "uppercase",
-            }}
-          >
-            CLASSIFIED // STACS CTF DOSSIER
-          </span>
-          <span
-            data-animate
-            style={{
-              fontFamily: "'Courier New', monospace",
-              fontSize: "9px",
-              letterSpacing: "0.3em",
-              color: "#333",
-            }}
-          >
-            SOLASTA TECH-FEST
-          </span>
-        </div>
+      {/* Ambient center glow */}
+      <div style={{
+        position: "absolute", top: "-8rem", left: "50%", transform: "translateX(-50%)",
+        width: "700px", height: "500px",
+        background: `radial-gradient(ellipse, ${CYAN_GLOW} 0%, transparent 68%)`,
+        pointerEvents: "none",
+      }} />
 
-        {/* ── HERO ── */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr",
-            padding: "6rem 3rem 0",
-            maxWidth: "1400px",
-            margin: "0 auto",
-          }}
-        >
-          {/* Overline */}
+      <div style={{ maxWidth: "1280px", width: "100%", margin: "0 auto", position: "relative", zIndex: 10 }}>
+
+        {/* ── HEADER ── */}
+        <header style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "6rem", textAlign: "center" }}>
+
+          {/* Badge */}
           <div
-            data-animate
+            data-animate="up" data-delay="80"
             style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "1rem",
               marginBottom: "2.5rem",
+              fontSize: "10px",
+              letterSpacing: "0.55em",
+              color: CYAN_TEXT_DIM,
+              textTransform: "uppercase",
+              padding: "0.4rem 1.4rem",
+              border: `1px solid ${CYAN_BORDER}`,
+              borderRadius: "9999px",
+              background: CYAN_GLOW,
             }}
           >
-            <div style={{ width: "2.5rem", height: "1px", background: "#FF2D20" }} />
-            <span
-              style={{
-                fontFamily: "'Courier New', monospace",
-                fontSize: "9px",
-                letterSpacing: "0.55em",
-                color: "#FF2D20",
-                textTransform: "uppercase",
-              }}
-            >
-              Event Intelligence
-            </span>
+            Protocol: Event Intel
           </div>
 
-          {/* Giant Title */}
-          <h1
-            data-animate
+          {/* DEDSEC big title */}
+          <h2
+            data-animate="up" data-delay="200"
             style={{
-              fontFamily: "'Georgia', serif",
-              fontSize: "clamp(4.5rem, 13vw, 11rem)",
+              fontSize: "clamp(3.5rem, 11vw, 7.5rem)",
               fontWeight: "900",
               fontStyle: "italic",
-              color: "#fff",
-              lineHeight: 0.88,
-              letterSpacing: "-0.04em",
+              color: CYAN,
+              letterSpacing: "-0.02em",
+              lineHeight: 0.9,
               margin: 0,
+              textShadow: `0 0 30px ${CYAN}, 0 0 60px rgba(0,245,228,0.3), 0 0 100px rgba(0,245,228,0.1)`,
             }}
           >
-            THE
-            <br />
-            <span style={{ color: "#FF2D20" }}>STACS</span>
-            <br />
-            <span
-              style={{
-                WebkitTextStroke: "1px #fff",
-                color: "transparent",
-              }}
-            >
-              CTF
+            THE{" "}
+            <span style={{ WebkitTextStroke: `1px ${CYAN}`, color: "transparent", textShadow: "none" }}>
+              DEDSEC
             </span>
-          </h1>
+            <br />
+            <span style={{ color: CYAN, textShadow: `0 0 30px ${CYAN}, 0 0 60px rgba(0,245,228,0.3)` }}>
+              CTF
+            </span>{" "}
+            <span style={{ color: "rgba(0,245,228,0.4)", textShadow: "none", fontWeight: "300" }}>
+              EXPERIENCE
+            </span>
+          </h2>
 
-          {/* Subhead row */}
+          {/* Tags row */}
           <div
-            data-animate
+            data-animate="up" data-delay="340"
+            style={{ display: "flex", gap: "2rem", alignItems: "center", marginTop: "2rem", flexWrap: "wrap", justifyContent: "center" }}
+          >
+            {["CSE DEPARTMENT", "SOLASTA FEST", "NSS COLLEGE OF ENGINEERING"].map((tag, i) => (
+              <span key={i} style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "11px", letterSpacing: "0.15em", color: CYAN_TEXT_DIM }}>
+                <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: CYAN, display: "inline-block", boxShadow: `0 0 6px ${CYAN}` }} />
+                {tag}
+              </span>
+            ))}
+          </div>
+
+          {/* Subtitle */}
+          <p
+            data-animate="up" data-delay="460"
             style={{
-              marginTop: "3.5rem",
-              display: "flex",
-              alignItems: "flex-end",
-              justifyContent: "space-between",
-              flexWrap: "wrap",
-              gap: "2rem",
-              paddingBottom: "5rem",
-              borderBottom: "1px solid #1a1a1a",
+              marginTop: "2rem",
+              color: "rgba(0,245,228,0.3)",
+              fontSize: "clamp(0.85rem, 1.8vw, 1.1rem)",
+              maxWidth: "40rem",
+              fontWeight: "400",
+              lineHeight: 1.8,
+              letterSpacing: "0.08em",
             }}
           >
-            <p
-              style={{
-                fontFamily: "'Courier New', monospace",
-                fontSize: "clamp(0.75rem, 1.4vw, 1rem)",
-                color: "#555",
-                lineHeight: 2,
-                maxWidth: "42ch",
-                letterSpacing: "0.04em",
-                margin: 0,
-              }}
-            >
-              NSSCE's premier cybersecurity showdown.
-              <br />
-              Part of the{" "}
-              <span style={{ color: "#aaa", letterSpacing: "0.2em" }}>SOLASTA</span> tech-fest
-              ecosystem.
-            </p>
-            <div
-              style={{
-                display: "flex",
-                gap: "3rem",
-              }}
-            >
-              {["WEB", "CRYPTO", "PWN", "OSINT"].map((tag) => (
-                <span
-                  key={tag}
-                  style={{
-                    fontFamily: "'Courier New', monospace",
-                    fontSize: "9px",
-                    letterSpacing: "0.4em",
-                    color: "#2e2e2e",
-                    textTransform: "uppercase",
-                  }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
+            CAPTURE · THE · FLAG
+          </p>
+        </header>
 
         {/* ── CARDS ── */}
-        <div
-          style={{
-            maxWidth: "1400px",
-            margin: "0 auto",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-            borderBottom: "1px solid #1a1a1a",
-          }}
-        >
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: "1px",
+          border: `1px solid ${CYAN_BORDER}`,
+          borderRadius: "4px",
+          overflow: "hidden",
+          marginBottom: "5rem",
+          background: CYAN_BORDER,
+        }}>
           {intelData.map((item, i) => (
-            <div
-              key={item.id}
-              style={{
-                borderRight: i < intelData.length - 1 ? "1px solid #1a1a1a" : "none",
-              }}
-            >
-              <Card item={item} index={i} />
-            </div>
+            <Card key={item.id} item={item} delay={540 + i * 130} />
           ))}
         </div>
 
-        {/* ── FOOTER MANIFESTO ── */}
-        <div
-          style={{
-            maxWidth: "1400px",
-            margin: "0 auto",
-            padding: "5rem 3rem 6rem",
-            display: "grid",
-            gridTemplateColumns: "1fr 2fr",
-            gap: "5rem",
-            alignItems: "center",
-          }}
-        >
-          <div data-animate>
-            <div
-              style={{
-                fontFamily: "'Georgia', serif",
-                fontSize: "clamp(5rem, 10vw, 8rem)",
-                fontWeight: "900",
-                fontStyle: "italic",
-                color: "#0f0f0f",
-                lineHeight: 1,
-                letterSpacing: "-0.04em",
-                userSelect: "none",
-              }}
-            >
-              STACS
-            </div>
-          </div>
-
-          <div data-animate style={{ borderLeft: "1px solid #1a1a1a", paddingLeft: "4rem" }}>
-            <p
-              style={{
-                fontFamily: "'Georgia', serif",
-                fontSize: "clamp(1.05rem, 2vw, 1.55rem)",
-                color: "#888",
-                lineHeight: 1.75,
-                fontWeight: "300",
-                margin: 0,
-              }}
-            >
-              <em style={{ color: "#e0e0e0", fontWeight: "700" }}>Student Association of Computer Science</em>
-              {" "}— a legacy of engineering excellence at NSSCE.
-              Shaping the next generation of security professionals
-              through adversarial learning and elite competition.
-            </p>
-
-            <div
-              style={{
-                marginTop: "2.5rem",
-                display: "flex",
-                gap: "2rem",
-                alignItems: "center",
-              }}
-            >
-              <div style={{ width: "3rem", height: "1px", background: "#FF2D20" }} />
-              <span
-                style={{
-                  fontFamily: "'Courier New', monospace",
-                  fontSize: "9px",
-                  color: "#333",
-                  letterSpacing: "0.5em",
-                }}
-              >
-                SUSTAINING INNOVATION SINCE INCEPTION
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Bottom bar */}
-        <div
-          data-animate
-          style={{
-            borderTop: "1px solid #1a1a1a",
-            padding: "1.2rem 3rem",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <span
-            style={{
-              fontFamily: "'Courier New', monospace",
-              fontSize: "9px",
-              color: "#2a2a2a",
-              letterSpacing: "0.35em",
-            }}
-          >
-            © NSSCE // STACS CTF
-          </span>
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center" }}>
-            <div
-              style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "#FF2D20",
-                animation: "pulse 2s infinite",
-              }}
-            />
-            <span
-              style={{
-                fontFamily: "'Courier New', monospace",
-                fontSize: "9px",
-                color: "#FF2D20",
-                letterSpacing: "0.35em",
-              }}
-            >
-              LIVE EVENT
-            </span>
-          </div>
-        </div>
+        {/* ── FOOTER ── */}
+        <FooterFrame />
       </div>
 
       <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.3; }
-        }
         * { box-sizing: border-box; }
-        @media (max-width: 768px) {
-          section > div > div:nth-child(5) {
-            grid-template-columns: 1fr !important;
-            gap: 2rem !important;
-          }
-          section > div > div:nth-child(5) > div:last-child {
-            border-left: none !important;
-            border-top: 1px solid #1a1a1a !important;
-            padding-left: 0 !important;
-            padding-top: 2.5rem !important;
-          }
+        @keyframes flicker {
+          0%, 97%, 100% { opacity: 1; }
+          98% { opacity: 0.85; }
+          99% { opacity: 1; }
+        }
+        @keyframes blink {
+          0%, 49% { opacity: 1; }
+          50%, 100% { opacity: 0; }
         }
       `}</style>
     </section>
+  )
+}
+
+function Card({ item, delay }) {
+  const [hovered, setHovered] = useState(false)
+
+  return (
+    <div
+      data-animate="scale"
+      data-delay={delay}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        position: "relative",
+        padding: "2.5rem 2rem",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "flex-end",
+        minHeight: "280px",
+        background: hovered ? "rgba(0,245,228,0.05)" : "#050a0a",
+        cursor: "default",
+        transition: "background 0.4s",
+        overflow: "hidden",
+      }}
+    >
+      {/* Top-right corner id */}
+      <div style={{
+        position: "absolute", top: "1.2rem", right: "1.2rem",
+        fontSize: "10px", letterSpacing: "0.3em",
+        color: hovered ? CYAN : "rgba(0,245,228,0.15)",
+        transition: "color 0.3s",
+      }}>
+        //{item.id}
+      </div>
+
+      {/* Icon */}
+      <div style={{
+        position: "absolute", top: "2rem", left: "2rem",
+        fontSize: "1.6rem",
+        color: hovered ? CYAN : "rgba(0,245,228,0.12)",
+        textShadow: hovered ? `0 0 14px ${CYAN}` : "none",
+        transition: "all 0.4s",
+        transform: hovered ? "scale(1.15)" : "scale(1)",
+      }}>
+        {item.icon}
+      </div>
+
+      {/* Radial hover glow */}
+      <div style={{
+        position: "absolute", inset: 0,
+        opacity: hovered ? 1 : 0,
+        background: `radial-gradient(circle at top right, rgba(0,245,228,0.07), transparent 65%)`,
+        transition: "opacity 0.6s",
+        pointerEvents: "none",
+      }} />
+
+      {/* Bottom glow line */}
+      <div style={{
+        position: "absolute", bottom: 0, left: 0, right: 0, height: "1px",
+        background: `linear-gradient(90deg, transparent, ${CYAN}80, transparent)`,
+        opacity: hovered ? 1 : 0,
+        transition: "opacity 0.4s",
+      }} />
+
+      {/* Content */}
+      <div style={{ position: "relative", zIndex: 10 }}>
+        <p style={{
+          fontSize: "9px", letterSpacing: "0.45em",
+          color: CYAN, margin: "0 0 0.6rem",
+          textShadow: `0 0 10px ${CYAN}`,
+        }}>
+          {item.label}
+        </p>
+        <h3 style={{
+          fontSize: "1.1rem", fontWeight: "700",
+          color: hovered ? "#fff" : "rgba(255,255,255,0.85)",
+          margin: "0 0 0.8rem", lineHeight: 1.3,
+          transition: "color 0.3s",
+          fontFamily: "'Courier New', monospace",
+        }}>
+          {item.title}
+        </h3>
+        <p style={{
+          color: hovered ? "rgba(0,245,228,0.55)" : "rgba(0,245,228,0.25)",
+          fontSize: "0.78rem", lineHeight: 1.8,
+          transition: "color 0.3s", margin: 0,
+          letterSpacing: "0.04em",
+        }}>
+          {item.desc}
+        </p>
+      </div>
+    </div>
+  )
+}
+
+function FooterFrame() {
+  const ref = useRef(null)
+
+  useEffect(() => {
+    if (!ref.current) return
+    const el = ref.current
+    el.style.opacity = "0"
+    el.style.transform = "translateY(24px)"
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        el.style.transition = "opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1)"
+        el.style.opacity = "1"
+        el.style.transform = "translateY(0)"
+        observer.disconnect()
+      }
+    }, { threshold: 0.15 })
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  return (
+    <div ref={ref}>
+      {/* Dashed border wrapper — matching the image's dashed button style */}
+      <div style={{
+        padding: "1px",
+        border: `1px dashed ${CYAN_BORDER}`,
+        borderRadius: "6px",
+        background: "transparent",
+      }}>
+        <div style={{
+          background: "#050a0a",
+          borderRadius: "4px",
+          padding: "4rem 3rem",
+          textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
+        }}>
+          {/* Inner ambient */}
+          <div style={{
+            position: "absolute", top: "-4rem", left: "50%", transform: "translateX(-50%)",
+            width: "500px", height: "300px",
+            background: `radial-gradient(ellipse, ${CYAN_GLOW} 0%, transparent 70%)`,
+            pointerEvents: "none",
+          }} />
+
+          <p style={{
+            fontSize: "9px", letterSpacing: "0.7em",
+            color: "rgba(0,245,228,0.2)",
+            textTransform: "uppercase", marginBottom: "2.5rem",
+          }}>
+            // Sustaining Innovation Since Inception
+          </p>
+
+          <p style={{
+            color: "rgba(0,245,228,0.4)",
+            fontSize: "clamp(1rem, 2.2vw, 1.5rem)",
+            fontWeight: "400",
+            lineHeight: 1.7,
+            maxWidth: "52rem",
+            margin: "0 auto",
+            letterSpacing: "0.04em",
+          }}>
+            <span style={{
+              color: CYAN, fontWeight: "700",
+              textShadow: `0 0 20px ${CYAN}, 0 0 40px rgba(0,245,228,0.2)`,
+            }}>
+              DEDSEC CTF
+            </span>{" "}
+            — NSSCE&apos;s premier cybersecurity competition, part of the{" "}
+            <span style={{ color: "rgba(0,245,228,0.75)", fontWeight: "600" }}>
+              Solasta
+            </span>{" "}
+            tech-fest. Shaping the next generation of security professionals.
+          </p>
+
+          {/* Terminal prompt line */}
+          <div style={{
+            marginTop: "3rem",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.5rem",
+            fontSize: "12px",
+            color: CYAN,
+            letterSpacing: "0.3em",
+            border: `1px dashed ${CYAN_BORDER}`,
+            padding: "0.6rem 2rem",
+            borderRadius: "4px",
+            background: CYAN_GLOW,
+            textShadow: `0 0 10px ${CYAN}`,
+          }}>
+            $ ~/ INITIALIZE
+            <span style={{ animation: "blink 1s step-end infinite" }}>_</span>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
