@@ -31,7 +31,7 @@ export default function WhatsappLink() {
       <div className="wa-glow absolute -inset-1 bg-gradient-to-r from-neon-green to-emerald-500 rounded-xl blur opacity-40 group-hover:opacity-100 transition duration-1000 group-hover:duration-200"></div>
       
       <a 
-        href="#" 
+        href="https://chat.whatsapp.com/C8UYtX2tRrp7i0Z62WrvfL" 
         target="_blank" 
         rel="noopener noreferrer"
         className="relative flex items-center gap-4 bg-[#02080c] border border-neon-green/30 px-6 py-5 rounded-xl overflow-hidden transition-all hover:border-neon-green/60 hover:-translate-y-1 block"
