@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import anime from 'animejs'
+import WhatsappLink from './WhatsappLink'
 
-export default function Hero({ isInitializing, onInitialize }) {
+export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
   const containerRef = useRef(null)
   const svgRef = useRef(null)
   const btnRef = useRef(null)
@@ -764,39 +765,43 @@ export default function Hero({ isInitializing, onInitialize }) {
           </div>
 
           {/* CTA Button */}
-          <div ref={btnRef} className="opacity-0 cta-outer">
-            <button
-              onClick={handleClick}
-              onMouseEnter={handleHoverIn}
-              onMouseLeave={handleHoverOut}
-              className="cta-btn init-btn group"
-              data-hover
-            >
-              <svg
-                ref={btnSvgRef}
-                className="absolute inset-[-1px] w-[calc(100%+2px)] h-[calc(100%+2px)] pointer-events-none"
-                preserveAspectRatio="none"
+          {!hasRegistered ? (
+            <div ref={btnRef} className="opacity-0 cta-outer">
+              <button
+                onClick={handleClick}
+                onMouseEnter={handleHoverIn}
+                onMouseLeave={handleHoverOut}
+                className="cta-btn init-btn group"
+                data-hover
               >
-                <rect
-                  className="btn-border-path"
-                  x="1" y="1"
-                  width="calc(100% - 2px)" height="calc(100% - 2px)"
-                  rx="0" ry="0"
-                  fill="none"
-                  stroke="#00ffff"
-                  strokeWidth="1"
-                  strokeDasharray="10 6"
-                />
-              </svg>
-              <div className="btn-glow absolute inset-0 opacity-0" style={{ background: 'rgba(0,255,255,0.05)' }} />
-              <span className="btn-text relative flex items-center gap-3" style={{ letterSpacing: '0.35em' }}>
-                <span className="cta-label-prefix">$_</span>
-                <span>Initialize</span>
-                <span className="terminal-cursor-blink !w-[6px] !h-[14px] !bg-cyber/80" />
-              </span>
-            </button>
-            <span className="cta-hex">0x4445435345432E696E6974</span>
-          </div>
+                <svg
+                  ref={btnSvgRef}
+                  className="absolute inset-[-1px] w-[calc(100%+2px)] h-[calc(100%+2px)] pointer-events-none"
+                  preserveAspectRatio="none"
+                >
+                  <rect
+                    className="btn-border-path"
+                    x="1" y="1"
+                    width="calc(100% - 2px)" height="calc(100% - 2px)"
+                    rx="0" ry="0"
+                    fill="none"
+                    stroke="#00ffff"
+                    strokeWidth="1"
+                    strokeDasharray="10 6"
+                  />
+                </svg>
+                <div className="btn-glow absolute inset-0 opacity-0" style={{ background: 'rgba(0,255,255,0.05)' }} />
+                <span className="btn-text relative flex items-center gap-3" style={{ letterSpacing: '0.35em' }}>
+                  <span className="cta-label-prefix">$_</span>
+                  <span>Initialize</span>
+                  <span className="terminal-cursor-blink !w-[6px] !h-[14px] !bg-cyber/80" />
+                </span>
+              </button>
+              <span className="cta-hex">0x4445435345432E696E6974</span>
+            </div>
+          ) : (
+            <WhatsappLink />
+          )}
         </div>
 
         {/* Scroll indicator */}

@@ -13,6 +13,7 @@ export default function App() {
   const [submitted, setSubmitted] = useState(false)
   const [teamCode, setTeamCode] = useState(null)
   const [initializing, setInitializing] = useState(false)
+  const [hasRegistered, setHasRegistered] = useState(false)
 
   // Simple routing for Admin Dashboard
   if (typeof window !== 'undefined' && window.location.pathname === '/admin') {
@@ -40,6 +41,7 @@ export default function App() {
         <Hero 
           isInitializing={initializing} 
           onInitialize={() => setInitializing(true)} 
+          hasRegistered={hasRegistered}
         />
         
         {/* We keep other sections hidden or below depending on initializing state */}
@@ -53,7 +55,11 @@ export default function App() {
         {initializing && (
           <div className="fixed inset-0 z-40 flex items-center justify-center pointer-events-none">
             <div className="pointer-events-auto max-w-2xl w-full px-5">
-              <RegistrationForm onSuccess={(code) => { setTeamCode(code); setSubmitted(true); }} isUnfolding />
+              <RegistrationForm onSuccess={(code) => { 
+                setTeamCode(code); 
+                setSubmitted(true); 
+                setHasRegistered(true);
+              }} isUnfolding />
             </div>
           </div>
         )}
