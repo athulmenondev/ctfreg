@@ -13,7 +13,7 @@ export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
   const [memUsage, setMemUsage] = useState(87)
   const [netPackets, setNetPackets] = useState(1024)
 
-  const EVENT_DATE = new Date('2026-03-15T09:00:00+05:30')
+  const EVENT_DATE = new Date('2026-03-06T19:00:00+05:30')
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, mins: 0, secs: 0 })
 
   useEffect(() => {
@@ -59,7 +59,7 @@ export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
       easing: 'easeOutExpo',
     }, '-=600')
 
-    const paths = svgRef.current?.querySelectorAll('.decsec-path')
+    const paths = svgRef.current?.querySelectorAll('.dedsec-path')
     if (paths) {
       tl.add({
         targets: paths,
@@ -143,7 +143,7 @@ export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
     const interval = setInterval(() => {
       if (document.hidden || isInitializing) return
 
-      const targets = ['.decsec-svg']
+      const targets = ['.dedsec-svg']
       anime.timeline({ easing: 'linear' })
         .add({
           targets,
@@ -638,7 +638,7 @@ export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
 
         {/* Side labels */}
         <div className="side-label side-label-left hidden lg:block">SOLASTA CTF // NSS COLLEGE OF ENGINEERING</div>
-        <div className="side-label side-label-right hidden lg:block">DECSEC // CAPTURE THE FLAG // 2026</div>
+        <div className="side-label side-label-right hidden lg:block">DEDSEC // CAPTURE THE FLAG // 2026</div>
 
         {/* ═══ System Status Bar ═══ */}
         <div className="system-status sys-bar absolute top-0 left-0 right-0 flex items-center justify-between w-full px-6 py-2.5 opacity-0 z-20">
@@ -661,7 +661,7 @@ export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
           </div>
 
           <div className="status-item sys-chip opacity-0" style={{ borderColor: 'rgba(0,255,255,0.12)' }}>
-            <span style={{ color: 'rgba(255,255,255,0.1)' }} className="hidden sm:inline">DECSEC://</span>
+            <span style={{ color: 'rgba(255,255,255,0.1)' }} className="hidden sm:inline">DEDSEC://</span>
             <span style={{ color: 'rgba(0,255,255,0.5)' }}>SOLASTA.CTF</span>
           </div>
 
@@ -697,17 +697,17 @@ export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
             <div className="h-rule" style={{ width: '60px' }} />
           </div>
 
-          {/* ═══ DECSEC SVG ═══ */}
+          {/* ═══ DEDSEC SVG ═══ */}
           <div className="mb-6 relative w-full">
             <div className="svg-ambient" />
-            <svg ref={svgRef} viewBox="0 0 560 90" className="decsec-svg w-full relative z-10">
+            <svg ref={svgRef} viewBox="0 0 560 90" className="dedsec-svg w-full relative z-10">
               <g fill="transparent" stroke="#00ffff" strokeWidth="2" strokeLinejoin="miter" strokeLinecap="square">
-                <path className="decsec-path" d={dPath} style={{ opacity: 0 }} />
-                <path className="decsec-path" d={ePath} style={{ opacity: 0 }} />
-                <path className="decsec-path" d={cPath} style={{ opacity: 0 }} />
-                <path className="decsec-path" d={sPath} style={{ opacity: 0 }} />
-                <path className="decsec-path" d={e2Path} style={{ opacity: 0 }} />
-                <path className="decsec-path" d={c2Path} style={{ opacity: 0 }} />
+                <path className="dedsec-path" d={dPath} style={{ opacity: 0 }} />
+                <path className="dedsec-path" d={ePath} style={{ opacity: 0 }} />
+                <path className="dedsec-path" d={cPath} style={{ opacity: 0 }} />
+                <path className="dedsec-path" d={sPath} style={{ opacity: 0 }} />
+                <path className="dedsec-path" d={e2Path} style={{ opacity: 0 }} />
+                <path className="dedsec-path" d={c2Path} style={{ opacity: 0 }} />
               </g>
             </svg>
           </div>
@@ -797,7 +797,7 @@ export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
                   <span className="terminal-cursor-blink !w-[6px] !h-[14px] !bg-cyber/80" />
                 </span>
               </button>
-              <span className="cta-hex">0x4445435345432E696E6974</span>
+              <span className="cta-hex">0x4445445345432E696E6974</span>
             </div>
           ) : (
             <WhatsappLink />
