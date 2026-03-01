@@ -8,15 +8,13 @@ export default function Hero({ isInitializing, onInitialize }) {
   const btnSvgRef = useRef(null)
   const neonLoopRef = useRef(null)
 
-  // System status clock
   const [timeStr, setTimeStr] = useState('00:00:00')
   const [memUsage, setMemUsage] = useState(87)
   const [netPackets, setNetPackets] = useState(1024)
 
-  // Countdown timer — set your event date here
-  const EVENT_DATE = new Date('2026-03-06T19:00:00+05:30')
+  const EVENT_DATE = new Date('2026-03-15T09:00:00+05:30')
   const [countdown, setCountdown] = useState({ days: 0, hours: 0, mins: 0, secs: 0 })
-  
+
   useEffect(() => {
     const tick = () => {
       const now = new Date()
@@ -41,11 +39,9 @@ export default function Hero({ isInitializing, onInitialize }) {
     return () => clearInterval(it)
   }, [])
 
-  // Initial Entrance Sequence
   useEffect(() => {
     const tl = anime.timeline({ easing: 'easeOutQuart' })
 
-    // 1. Status bar fades in from top
     tl.add({
       targets: '.system-status',
       translateY: [-30, 0],
@@ -53,7 +49,6 @@ export default function Hero({ isInitializing, onInitialize }) {
       duration: 900,
     })
 
-    // 2. Status bar items stagger in
     tl.add({
       targets: '.status-item',
       translateX: [-20, 0],
@@ -63,8 +58,7 @@ export default function Hero({ isInitializing, onInitialize }) {
       easing: 'easeOutExpo',
     }, '-=600')
 
-    // 3. SVG Path Morphing — Laser/decode drawing
-    const paths = svgRef.current?.querySelectorAll('.dedsec-path')
+    const paths = svgRef.current?.querySelectorAll('.decsec-path')
     if (paths) {
       tl.add({
         targets: paths,
@@ -80,7 +74,6 @@ export default function Hero({ isInitializing, onInitialize }) {
         }
       }, '-=400')
 
-      // 4. Fill characters after stroke draw completes
       tl.add({
         targets: paths,
         fill: ['rgba(0,0,0,0)', '#00ffff'],
@@ -91,13 +84,11 @@ export default function Hero({ isInitializing, onInitialize }) {
           paths.forEach(p => {
             p.style.filter = 'drop-shadow(0 0 6px rgba(0,255,255,0.3))'
           })
-          // Enable pulsing neon glow after entrance
           svgRef.current?.classList.add('glowing')
         }
       }, '-=300')
     }
 
-    // 5. "CAPTURE THE FLAG" subtitle with decode effect
     tl.add({
       targets: '.hero-subtitle-char',
       opacity: [0, 1],
@@ -107,7 +98,6 @@ export default function Hero({ isInitializing, onInitialize }) {
       easing: 'easeOutExpo',
     }, '-=500')
 
-    // 6. Decorative dividers
     tl.add({
       targets: '.hero-divider-left',
       width: ['0%', '100%'],
@@ -123,7 +113,6 @@ export default function Hero({ isInitializing, onInitialize }) {
       easing: 'easeOutExpo',
     }, '-=600')
 
-    // 7. Meta details
     tl.add({
       targets: '.hero-meta',
       translateY: [15, 0],
@@ -132,7 +121,6 @@ export default function Hero({ isInitializing, onInitialize }) {
       delay: anime.stagger(100),
     }, '-=300')
 
-    // 8. CTA button appears
     tl.add({
       targets: btnRef.current,
       scale: [0.85, 1],
@@ -141,7 +129,6 @@ export default function Hero({ isInitializing, onInitialize }) {
       easing: 'easeOutElastic(1, .6)',
     }, '-=200')
 
-    // 9. Corner brackets
     tl.add({
       targets: '.corner-bracket',
       opacity: [0, 0.3],
@@ -151,12 +138,11 @@ export default function Hero({ isInitializing, onInitialize }) {
     }, '-=400')
   }, [])
 
-  // 5s periodic glitch effect with RGB Split
   useEffect(() => {
     const interval = setInterval(() => {
       if (document.hidden || isInitializing) return
 
-      const targets = ['.dedsec-svg']
+      const targets = ['.decsec-svg']
       anime.timeline({ easing: 'linear' })
         .add({
           targets,
@@ -190,15 +176,13 @@ export default function Hero({ isInitializing, onInitialize }) {
           duration: 50,
         })
 
-      // Scanline flash
       anime({
         targets: '.scanline-overlay',
         opacity: [0.03, 0.18, 0.05, 0.12, 0.02],
         duration: 180,
         easing: 'steps(5)'
       })
-      
-      // Random text glitch on subtitle
+
       anime({
         targets: '.hero-subtitle-char',
         opacity: [1, 0.3, 1, 0.5, 1],
@@ -210,7 +194,6 @@ export default function Hero({ isInitializing, onInitialize }) {
     return () => clearInterval(interval)
   }, [isInitializing])
 
-  // Handle Initialize Sequence
   useEffect(() => {
     if (isInitializing) {
       anime.timeline({ easing: 'easeInOutQuart' })
@@ -233,14 +216,12 @@ export default function Hero({ isInitializing, onInitialize }) {
     }
   }, [isInitializing])
 
-  // Button hover — animated neon border loop via SVG stroke animation
   const handleHoverIn = useCallback(() => {
-    // Clear previous
     if (neonLoopRef.current) {
       anime.remove('.btn-border-path')
       neonLoopRef.current = null
     }
-    
+
     neonLoopRef.current = anime({
       targets: '.btn-border-path',
       strokeDashoffset: [anime.setDashoffset, 0],
@@ -286,7 +267,6 @@ export default function Hero({ isInitializing, onInitialize }) {
     })
   }, [])
 
-  // Click effect — flash before transitioning
   const handleClick = useCallback(() => {
     anime({
       targets: '.scanline-overlay',
@@ -304,32 +284,16 @@ export default function Hero({ isInitializing, onInitialize }) {
     })
   }, [onInitialize])
 
-  // SVG paths for 'dedsec' — clean industrial block letters
-  // Each letter: 80 wide, 80 tall, 15px gap, bar thickness 18px
-  // Layout: D(0-80) E(95-175) C(190-270) S(285-365) E(380-460) C(475-555)
-
-  // D: outer clockwise + inner counter-clockwise for hole
   const dPath = "M0,5 L60,5 L80,25 L80,65 L60,85 L0,85 Z M18,22 L18,68 L50,68 L62,56 L62,34 L50,22 Z"
-
-  // E: single outline tracing the E shape
   const ePath = "M95,5 L175,5 L175,22 L113,22 L113,37 L160,37 L160,52 L113,52 L113,68 L175,68 L175,85 L95,85 Z"
-
-  // C: open bracket shape
-  const d2Path = "M190,5 L250,5 L270,25 L270,65 L250,85 L190,85 Z M208,22 L208,68 L240,68 L252,56 L252,34 L240,22 Z"
-
-  // S: symmetric block S — top bar → left connector → mid bar → right connector → bottom bar
+  const cPath = "M270,5 L190,5 L190,85 L270,85 L270,68 L208,68 L208,22 L270,22 Z"
   const sPath = "M285,5 L365,5 L365,21 L303,21 L303,37 L365,37 L365,85 L285,85 L285,69 L347,69 L347,53 L285,53 Z"
-
-  // E2: same as E, shifted
   const e2Path = "M380,5 L460,5 L460,22 L398,22 L398,37 L445,37 L445,52 L398,52 L398,68 L460,68 L460,85 L380,85 Z"
-
-  // C2: same as C, shifted
   const c2Path = "M555,5 L475,5 L475,85 L555,85 L555,68 L493,68 L493,22 L555,22 Z"
 
   const subtitleText = "CAPTURE · THE · FLAG"
   const subtitleChars = subtitleText.split('')
 
-  // Countdown units for rendering
   const timerUnits = [
     { label: 'Days', value: countdown.days },
     { label: 'Hrs', value: countdown.hours },
@@ -338,170 +302,511 @@ export default function Hero({ isInitializing, onInitialize }) {
   ]
 
   return (
-    <section
-      ref={containerRef}
-      className="relative flex flex-col items-center justify-center min-h-screen px-8 text-center transition-transform origin-center"
-    >
-      {/* Corner Brackets — decorative framing */}
-      <div className="corner-bracket absolute top-8 left-8 w-16 h-16 border-l-2 border-t-2 border-cyber/20 opacity-0" />
-      <div className="corner-bracket absolute top-8 right-8 w-16 h-16 border-r-2 border-t-2 border-cyber/20 opacity-0" />
-      <div className="corner-bracket absolute bottom-8 left-8 w-16 h-16 border-l-2 border-b-2 border-cyber/20 opacity-0" />
-      <div className="corner-bracket absolute bottom-8 right-8 w-16 h-16 border-r-2 border-b-2 border-cyber/20 opacity-0" />
+    <>
+      {/* Global styles injected inline */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=VT323&display=swap');
 
-      {/* ═══ System Status Bento-Header ═══ */}
-      <div className="system-status absolute top-0 left-0 right-0 flex items-center justify-between w-full px-8 py-3 opacity-0 border-b border-white/[0.03] bg-carbon/60 backdrop-blur-md z-20">
-        <div className="flex items-center gap-4 sm:gap-8">
-          <div className="status-item flex items-center gap-2 opacity-0">
-            <div className="relative flex items-center gap-1.5">
-              <div className="w-2 h-2 bg-hot-pink rounded-full animate-pulse" />
-              <div className="absolute w-2 h-2 bg-hot-pink rounded-full animate-ping opacity-50" />
+        .hero-root {
+          font-family: 'Share Tech Mono', monospace;
+          background: #020408;
+          position: relative;
+          overflow: hidden;
+        }
+
+        /* CRT grid overlay */
+        .hero-root::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background-image:
+            linear-gradient(rgba(0,255,255,0.018) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,255,255,0.018) 1px, transparent 1px);
+          background-size: 48px 48px;
+          pointer-events: none;
+          z-index: 1;
+        }
+
+        /* Scanline CRT overlay */
+        .hero-root::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0,0,0,0.18) 2px,
+            rgba(0,0,0,0.18) 4px
+          );
+          pointer-events: none;
+          z-index: 2;
+        }
+
+        .scanline-overlay {
+          position: absolute;
+          inset: 0;
+          background: linear-gradient(
+            180deg,
+            transparent 0%,
+            rgba(0,255,255,0.015) 50%,
+            transparent 100%
+          );
+          pointer-events: none;
+          z-index: 3;
+          opacity: 0.04;
+        }
+
+        /* Status bar */
+        .sys-bar {
+          font-family: 'Share Tech Mono', monospace;
+          border-bottom: 1px solid rgba(0,255,255,0.08);
+          background: rgba(2,8,12,0.92);
+          backdrop-filter: blur(12px);
+        }
+
+        .sys-chip {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          padding: 2px 10px;
+          border: 1px solid rgba(0,255,255,0.08);
+          font-size: 9px;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          color: rgba(0,255,255,0.45);
+        }
+
+        .sys-chip.alert {
+          border-color: rgba(255,40,100,0.2);
+          color: rgba(255,40,100,0.8);
+        }
+
+        .sys-chip.active {
+          border-color: rgba(0,255,100,0.2);
+          color: rgba(0,255,100,0.7);
+        }
+
+        /* Tagline */
+        .subtitle-track {
+          font-family: 'Orbitron', monospace;
+          letter-spacing: 0.35em;
+          font-size: clamp(10px, 1.4vw, 15px);
+          color: rgba(0,255,255,0.35);
+          text-transform: uppercase;
+        }
+
+        /* Corner decorators */
+        .corner-tl {
+          position: absolute;
+          top: 80px; left: 20px;
+          width: 48px; height: 48px;
+          border-left: 1px solid rgba(0,255,255,0.15);
+          border-top: 1px solid rgba(0,255,255,0.15);
+        }
+        .corner-tr {
+          position: absolute;
+          top: 80px; right: 20px;
+          width: 48px; height: 48px;
+          border-right: 1px solid rgba(0,255,255,0.15);
+          border-top: 1px solid rgba(0,255,255,0.15);
+        }
+        .corner-bl {
+          position: absolute;
+          bottom: 20px; left: 20px;
+          width: 48px; height: 48px;
+          border-left: 1px solid rgba(0,255,255,0.15);
+          border-bottom: 1px solid rgba(0,255,255,0.15);
+        }
+        .corner-br {
+          position: absolute;
+          bottom: 20px; right: 20px;
+          width: 48px; height: 48px;
+          border-right: 1px solid rgba(0,255,255,0.15);
+          border-bottom: 1px solid rgba(0,255,255,0.15);
+        }
+
+        /* Timer blocks — brutalist */
+        .timer-cell {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          position: relative;
+          padding: 14px 20px;
+          background: rgba(0,255,255,0.022);
+          border: 1px solid rgba(0,255,255,0.1);
+          min-width: 72px;
+        }
+        .timer-cell::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(0,255,255,0.4), transparent);
+        }
+        .timer-cell + .timer-cell {
+          border-left: none;
+        }
+        .timer-num {
+          font-family: 'VT323', monospace;
+          font-size: clamp(36px, 5vw, 52px);
+          color: #00ffff;
+          line-height: 1;
+          text-shadow: 0 0 20px rgba(0,255,255,0.5), 0 0 40px rgba(0,255,255,0.2);
+        }
+        .timer-label {
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 9px;
+          letter-spacing: 3px;
+          color: rgba(0,255,255,0.25);
+          text-transform: uppercase;
+          margin-top: 6px;
+        }
+        .timer-colon {
+          font-family: 'VT323', monospace;
+          font-size: 40px;
+          color: rgba(0,255,255,0.2);
+          line-height: 1;
+          align-self: center;
+          margin-bottom: 16px;
+        }
+
+        /* Prize block */
+        .prize-block {
+          position: relative;
+          border: 1px solid rgba(255,200,50,0.2);
+          background: rgba(255,200,50,0.03);
+          padding: 16px 40px;
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+        }
+        .prize-block::before {
+          content: 'PRIZE POOL';
+          position: absolute;
+          top: -1px; left: 20px;
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 8px;
+          letter-spacing: 4px;
+          color: rgba(255,200,50,0.35);
+          background: #020408;
+          padding: 0 8px;
+          transform: translateY(-50%);
+        }
+        .prize-amount {
+          font-family: 'Orbitron', monospace;
+          font-size: clamp(22px, 3.5vw, 32px);
+          font-weight: 900;
+          color: rgb(255,200,50);
+          letter-spacing: 0.1em;
+          text-shadow: 0 0 30px rgba(255,200,50,0.4);
+        }
+
+        /* Meta pills */
+        .meta-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          padding: 5px 14px;
+          border: 1px solid rgba(255,255,255,0.05);
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 10px;
+          letter-spacing: 2.5px;
+          color: rgba(255,255,255,0.25);
+          text-transform: uppercase;
+          background: rgba(255,255,255,0.015);
+        }
+
+        /* CTA button */
+        .cta-outer {
+          position: relative;
+          display: inline-block;
+        }
+        .cta-btn {
+          position: relative;
+          background: transparent;
+          border: none;
+          font-family: 'Orbitron', monospace;
+          font-weight: 700;
+          font-size: 13px;
+          color: #00ffff;
+          text-transform: uppercase;
+          padding: 20px 64px;
+          cursor: pointer;
+          overflow: visible;
+          letter-spacing: 0.4em;
+          clip-path: polygon(16px 0%, 100% 0%, calc(100% - 16px) 100%, 0% 100%);
+          background: rgba(0,255,255,0.04);
+          transition: background 0.3s;
+        }
+        .cta-btn:hover {
+          background: rgba(0,255,255,0.07);
+        }
+        .cta-label-prefix {
+          color: rgba(0,255,255,0.35);
+          font-size: 11px;
+          margin-right: 8px;
+        }
+        .cta-hex {
+          display: block;
+          text-align: center;
+          margin-top: 10px;
+          font-size: 9px;
+          letter-spacing: 2px;
+          color: rgba(255,255,255,0.06);
+          font-family: 'Share Tech Mono', monospace;
+        }
+
+        /* Scroll indicator */
+        .scroll-pip {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 8px;
+        }
+        .scroll-line {
+          width: 1px;
+          height: 28px;
+          background: linear-gradient(to bottom, rgba(0,255,255,0.3), transparent);
+          animation: scrollPulse 1.8s ease-in-out infinite;
+        }
+        @keyframes scrollPulse {
+          0%, 100% { opacity: 0.3; transform: scaleY(1); }
+          50% { opacity: 0.7; transform: scaleY(1.2); }
+        }
+        .scroll-text {
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 8px;
+          letter-spacing: 4px;
+          color: rgba(255,255,255,0.15);
+          text-transform: uppercase;
+          writing-mode: vertical-rl;
+        }
+
+        /* Ambient glow behind SVG */
+        .svg-ambient {
+          position: absolute;
+          inset: -30% -10%;
+          background: radial-gradient(ellipse at center, rgba(0,255,255,0.04) 0%, transparent 70%);
+          pointer-events: none;
+          filter: blur(40px);
+        }
+
+        /* Vertical side labels */
+        .side-label {
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%) rotate(-90deg);
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 8px;
+          letter-spacing: 5px;
+          color: rgba(0,255,255,0.08);
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+        .side-label-left { left: -30px; }
+        .side-label-right { right: -30px; }
+
+        /* Horizontal rule lines */
+        .h-rule {
+          width: 100%;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(0,255,255,0.07) 20%, rgba(0,255,255,0.07) 80%, transparent);
+        }
+
+        .divider-slash {
+          color: rgba(0,255,255,0.12);
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 14px;
+          line-height: 1;
+        }
+      `}</style>
+
+      <section
+        ref={containerRef}
+        className="hero-root relative flex flex-col items-center justify-center min-h-screen px-8 text-center transition-transform origin-center"
+      >
+        <div className="scanline-overlay" />
+
+        {/* Corner brackets */}
+        <div className="corner-bracket corner-tl opacity-0" />
+        <div className="corner-bracket corner-tr opacity-0" />
+        <div className="corner-bracket corner-bl opacity-0" />
+        <div className="corner-bracket corner-br opacity-0" />
+
+        {/* Side labels */}
+        <div className="side-label side-label-left hidden lg:block">SOLASTA CTF // NSS COLLEGE OF ENGINEERING</div>
+        <div className="side-label side-label-right hidden lg:block">DECSEC // CAPTURE THE FLAG // 2026</div>
+
+        {/* ═══ System Status Bar ═══ */}
+        <div className="system-status sys-bar absolute top-0 left-0 right-0 flex items-center justify-between w-full px-6 py-2.5 opacity-0 z-20">
+          <div className="flex items-center gap-3">
+            <div className="status-item sys-chip alert opacity-0">
+              <div className="relative flex items-center">
+                <div className="w-1.5 h-1.5 bg-red-500 rounded-full animate-pulse" />
+                <div className="absolute w-1.5 h-1.5 bg-red-500 rounded-full animate-ping opacity-40" />
+              </div>
+              REC
             </div>
-            <span className="text-[10px] font-mono tracking-[3px] text-hot-pink font-bold uppercase">REC</span>
-          </div>
-          <div className="status-item flex items-center gap-2 opacity-0">
-            <div className="w-1.5 h-1.5 bg-neon-green rounded-full shadow-[0_0_8px_var(--color-neon-green)]" />
-            <span className="text-[10px] font-mono tracking-[3px] text-neon-green/80 uppercase">SYS.ONLINE</span>
-          </div>
-          <div className="status-item items-center gap-2 opacity-0 hidden sm:flex">
-            <span className="text-[10px] font-mono tracking-[2px] text-white/25 uppercase">CPU:</span>
-            <span className="text-[10px] font-mono tracking-[2px] text-cyber font-bold">{memUsage.toFixed(1)}%</span>
-          </div>
-        </div>
-
-        <div className="status-item flex items-center gap-2 opacity-0">
-          <span className="text-[10px] font-mono tracking-[4px] text-white/15 uppercase hidden sm:inline">dedsec://</span>
-          <span className="text-[10px] font-mono tracking-[4px] text-cyber/40 uppercase">SOLASTA.CTF</span>
-        </div>
-
-        <div className="flex items-center gap-4 sm:gap-8">
-          <div className="status-item items-center gap-2 opacity-0 hidden sm:flex">
-            <span className="text-[10px] font-mono tracking-[2px] text-white/25 uppercase">MEM:</span>
-            <span className="text-[10px] font-mono tracking-[2px] text-gold/60 font-bold">{memUsage.toFixed(1)}%</span>
-          </div>
-          <div className="status-item items-center gap-2 opacity-0 hidden md:flex">
-            <span className="text-[10px] font-mono tracking-[2px] text-white/25 uppercase">NET:</span>
-            <span className="text-[10px] font-mono tracking-[2px] text-cyber/50 font-bold">{netPackets}PKT</span>
-          </div>
-          <div className="status-item items-center gap-2 opacity-0 hidden lg:flex">
-            <span className="text-[10px] font-mono tracking-[2px] text-white/25 uppercase">UPTIME:</span>
-            <span className="text-[10px] font-mono tracking-[2px] text-neon-green/50">99.9%</span>
-          </div>
-          <div className="status-item flex items-center gap-2 opacity-0">
-            <div className="w-1 h-1 bg-cyber/40 rounded-full" />
-            <span className="text-[10px] font-mono tracking-[3px] text-white/40">{timeStr}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* ═══ dedsec SVG Title — Focal Point ═══ */}
-      <div className="mb-8 relative w-full" style={{ maxWidth: '800px' }}>
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div className="w-[500px] h-[120px] bg-cyber/[0.02] blur-[80px] rounded-full" />
-        </div>
-        <svg ref={svgRef} viewBox="0 0 560 90" className="dedsec-svg w-full relative z-10">
-          <g fill="transparent" stroke="#00ffff" strokeWidth="2" strokeLinejoin="miter" strokeLinecap="square">
-            <path className="dedsec-path" d={dPath} style={{ opacity: 0 }} />
-            <path className="dedsec-path" d={ePath} style={{ opacity: 0 }} />
-            <path className="dedsec-path" d={d2Path} style={{ opacity: 0 }} />
-            <path className="dedsec-path" d={sPath} style={{ opacity: 0 }} />
-            <path className="dedsec-path" d={e2Path} style={{ opacity: 0 }} />
-            <path className="dedsec-path" d={c2Path} style={{ opacity: 0 }} />
-          </g>
-        </svg>
-      </div>
-
-      {/* ═══ Subtitle ═══ */}
-      <div className="mb-8 flex items-center justify-center gap-5">
-        <div className="hero-divider-left h-px w-12 sm:w-24 bg-gradient-to-r from-transparent to-cyber/30 opacity-0 hidden sm:block" />
-        <div className="font-mono text-sm sm:text-lg text-cyber/60 uppercase tracking-[4px] sm:tracking-[6px] whitespace-nowrap">
-          {subtitleChars.map((c, i) => (
-            <span key={i} className="hero-subtitle-char inline-block opacity-0" style={{ minWidth: c === ' ' ? '8px' : 'auto' }}>
-              {c === ' ' ? '\u00A0' : c}
-            </span>
-          ))}
-        </div>
-        <div className="hero-divider-right h-px w-12 sm:w-24 bg-gradient-to-l from-transparent to-cyber/30 opacity-0 hidden sm:block" />
-      </div>
-
-      {/* ═══ Event Meta ═══ */}
-      <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-10 mb-10">
-        <div className="hero-meta flex items-center gap-2.5 opacity-0">
-          <div className="w-2 h-2 bg-gold/50 rounded-full" />
-          <span className="text-xs sm:text-sm font-mono tracking-[3px] text-white/35 uppercase">STACS</span>
-        </div>
-        <div className="hero-meta flex items-center gap-2.5 opacity-0">
-          <div className="w-2 h-2 bg-cyber/50 rounded-full" />
-          <span className="text-xs sm:text-sm font-mono tracking-[3px] text-white/35 uppercase">Solasta TechFest</span>
-        </div>
-        <div className="hero-meta flex items-center gap-2.5 opacity-0">
-          <div className="w-2 h-2 bg-neon-green/50 rounded-full" />
-          <span className="text-xs sm:text-sm font-mono tracking-[3px] text-white/35 uppercase">NSS College of Engineering</span>
-        </div>
-      </div>
-
-      {/* ═══ Countdown Timer ═══ */}
-      <div className="hero-meta flex items-center justify-center gap-3 sm:gap-4 opacity-0" style={{ marginBottom: '1rem' }}>
-        {timerUnits.map((u) => (
-          <div key={u.label} className="timer-block">
-            <div className="text-xl sm:text-2xl font-mono font-bold text-cyber tabular-nums">
-              {String(u.value).padStart(2, '0')}
+            <div className="status-item sys-chip active opacity-0">
+              <div className="w-1.5 h-1.5 bg-green-400 rounded-full" style={{ boxShadow: '0 0 6px #00ff64' }} />
+              SYS.ONLINE
             </div>
-            <div className="text-[9px] font-mono text-white/20 uppercase tracking-[2px] mt-1">{u.label}</div>
+            <div className="status-item sys-chip opacity-0 hidden sm:flex">
+              <span style={{ color: 'rgba(255,255,255,0.2)' }}>CPU</span>
+              <span style={{ color: '#00ffff', fontWeight: 'bold' }}>100%</span>
+            </div>
           </div>
-        ))}
-      </div>
 
-      {/* ═══ Initialize CTA — extra breathing room via mt-12 above ═══ */}
-      <div ref={btnRef} className="opacity-0 relative mt-10">
-        <button
-          onClick={handleClick}
-          onMouseEnter={handleHoverIn}
-          onMouseLeave={handleHoverOut}
-          className="init-btn relative bg-transparent border-none text-cyber font-mono font-bold text-base uppercase overflow-visible group"
-          style={{ padding: '20px 56px' }}
-          data-hover
-        >
-          <svg
-            ref={btnSvgRef}
-            className="absolute inset-[-1px] w-[calc(100%+2px)] h-[calc(100%+2px)] pointer-events-none"
-            preserveAspectRatio="none"
-          >
-            <rect
-              className="btn-border-path"
-              x="1" y="1"
-              width="calc(100% - 2px)" height="calc(100% - 2px)"
-              rx="4" ry="4"
-              fill="none"
-              stroke="#00ffff"
-              strokeWidth="1.5"
-              strokeDasharray="8 4"
-            />
-          </svg>
-          <div className="absolute inset-0 border border-cyber/25 rounded" />
-          <div className="btn-glow absolute inset-0 bg-cyber/[0.03] rounded opacity-0" />
-          <span className="btn-text relative flex items-center gap-4 tracking-[5px]">
-            <span className="relative flex items-center gap-1.5">
-              <span className="text-cyber/60">$</span>
-              <span className="text-white/30">~/</span>
+          <div className="status-item sys-chip opacity-0" style={{ borderColor: 'rgba(0,255,255,0.12)' }}>
+            <span style={{ color: 'rgba(255,255,255,0.1)' }} className="hidden sm:inline">DECSEC://</span>
+            <span style={{ color: 'rgba(0,255,255,0.5)' }}>SOLASTA.CTF</span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="status-item sys-chip opacity-0 hidden sm:flex">
+              <span style={{ color: 'rgba(255,255,255,0.2)' }}>MEM</span>
+              <span style={{ color: 'rgb(255,200,50)', opacity: 0.7 }}>{memUsage.toFixed(1)}%</span>
+            </div>
+            <div className="status-item sys-chip opacity-0 hidden md:flex">
+              <span style={{ color: 'rgba(255,255,255,0.2)' }}>NET</span>
+              <span style={{ color: 'rgba(0,255,255,0.55)' }}>{netPackets}PKT</span>
+            </div>
+            <div className="status-item sys-chip opacity-0 hidden lg:flex">
+              <span style={{ color: 'rgba(255,255,255,0.2)' }}>UPTIME</span>
+              <span style={{ color: 'rgba(0,255,100,0.55)' }}>99.9%</span>
+            </div>
+            <div className="status-item sys-chip opacity-0">
+              <div className="w-1 h-1 rounded-full" style={{ background: 'rgba(0,255,255,0.4)' }} />
+              <span style={{ color: 'rgba(255,255,255,0.35)' }}>{timeStr}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ Main content column ═══ */}
+        <div className="relative z-10 flex flex-col items-center w-full" style={{ maxWidth: '860px' }}>
+
+          {/* Top micro-label */}
+          <div className="flex items-center gap-4 mb-6" style={{ marginTop: '0' }}>
+            <div className="h-rule" style={{ width: '60px' }} />
+            <span style={{ fontFamily: 'Share Tech Mono, monospace', fontSize: '9px', letterSpacing: '5px', color: 'rgba(0,255,255,0.2)', textTransform: 'uppercase' }}>
+              CSE DEPT // SOLASTA FEST // 2026
             </span>
-            <span className="text-cyber">Register</span>
-            <span className="terminal-cursor-blink !w-[7px] !h-[16px] !bg-cyber/80" />
-          </span>
-        </button>
-        <div className="flex items-center justify-center gap-2 mt-4">
-          <span className="text-[10px] font-mono text-white/10 tracking-[2px]">0x4445435345432E696E6974</span>
-        </div>
-      </div>
+            <div className="h-rule" style={{ width: '60px' }} />
+          </div>
 
-      {/* ═══ Scroll Indicator ═══ */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-        <div className="scroll-indicator flex flex-col items-center gap-2 opacity-40">
-          <span className="text-[10px] font-mono tracking-[4px] text-white/30 uppercase">Scroll</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white/25 animate-bounce">
-            <path d="M12 5v14M19 12l-7 7-7-7" />
-          </svg>
+          {/* ═══ DECSEC SVG ═══ */}
+          <div className="mb-6 relative w-full">
+            <div className="svg-ambient" />
+            <svg ref={svgRef} viewBox="0 0 560 90" className="decsec-svg w-full relative z-10">
+              <g fill="transparent" stroke="#00ffff" strokeWidth="2" strokeLinejoin="miter" strokeLinecap="square">
+                <path className="decsec-path" d={dPath} style={{ opacity: 0 }} />
+                <path className="decsec-path" d={ePath} style={{ opacity: 0 }} />
+                <path className="decsec-path" d={cPath} style={{ opacity: 0 }} />
+                <path className="decsec-path" d={sPath} style={{ opacity: 0 }} />
+                <path className="decsec-path" d={e2Path} style={{ opacity: 0 }} />
+                <path className="decsec-path" d={c2Path} style={{ opacity: 0 }} />
+              </g>
+            </svg>
+          </div>
+
+          {/* Subtitle divider row */}
+          <div className="mb-8 flex items-center justify-center gap-5 w-full">
+            <div className="hero-divider-left h-px opacity-0 hidden sm:block" style={{ width: '80px', background: 'linear-gradient(to right, transparent, rgba(0,255,255,0.2))' }} />
+            <div className="subtitle-track">
+              {subtitleChars.map((c, i) => (
+                <span key={i} className="hero-subtitle-char inline-block opacity-0" style={{ minWidth: c === ' ' ? '8px' : 'auto' }}>
+                  {c === ' ' ? '\u00A0' : c}
+                </span>
+              ))}
+            </div>
+            <div className="hero-divider-right h-px opacity-0 hidden sm:block" style={{ width: '80px', background: 'linear-gradient(to left, transparent, rgba(0,255,255,0.2))' }} />
+          </div>
+
+          {/* Meta pills */}
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-0 mb-10">
+            <div className="hero-meta meta-pill opacity-0">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(255,200,50,0.6)' }} />
+              CSE Department
+            </div>
+            <div className="divider-slash hidden sm:block" style={{ padding: '0 4px' }}>//</div>
+            <div className="hero-meta meta-pill opacity-0">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(0,255,255,0.6)' }} />
+              Solasta Fest
+            </div>
+            <div className="divider-slash hidden sm:block" style={{ padding: '0 4px' }}>//</div>
+            <div className="hero-meta meta-pill opacity-0">
+              <div className="w-1.5 h-1.5 rounded-full" style={{ background: 'rgba(0,255,100,0.6)' }} />
+              NSS College of Engineering
+            </div>
+          </div>
+
+          {/* Prize block */}
+          <div className="hero-meta prize-block mb-10 opacity-0">
+            <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: 'rgb(255,200,50)', boxShadow: '0 0 14px rgba(255,200,50,0.7)' }} />
+            <span className="prize-amount">15K INR</span>
+          </div>
+
+          {/* Countdown */}
+          <div className="hero-meta flex items-end mb-12 opacity-0">
+            {timerUnits.map((u, i) => (
+              <>
+                <div key={u.label} className="timer-cell">
+                  <div className="timer-num">{String(u.value).padStart(2, '0')}</div>
+                  <div className="timer-label">{u.label}</div>
+                </div>
+                {i < timerUnits.length - 1 && (
+                  <div key={`sep-${i}`} className="timer-colon" style={{ padding: '0 4px', marginBottom: '20px' }}>:</div>
+                )}
+              </>
+            ))}
+          </div>
+
+          {/* CTA Button */}
+          <div ref={btnRef} className="opacity-0 cta-outer">
+            <button
+              onClick={handleClick}
+              onMouseEnter={handleHoverIn}
+              onMouseLeave={handleHoverOut}
+              className="cta-btn init-btn group"
+              data-hover
+            >
+              <svg
+                ref={btnSvgRef}
+                className="absolute inset-[-1px] w-[calc(100%+2px)] h-[calc(100%+2px)] pointer-events-none"
+                preserveAspectRatio="none"
+              >
+                <rect
+                  className="btn-border-path"
+                  x="1" y="1"
+                  width="calc(100% - 2px)" height="calc(100% - 2px)"
+                  rx="0" ry="0"
+                  fill="none"
+                  stroke="#00ffff"
+                  strokeWidth="1"
+                  strokeDasharray="10 6"
+                />
+              </svg>
+              <div className="btn-glow absolute inset-0 opacity-0" style={{ background: 'rgba(0,255,255,0.05)' }} />
+              <span className="btn-text relative flex items-center gap-3" style={{ letterSpacing: '0.35em' }}>
+                <span className="cta-label-prefix">$_</span>
+                <span>Initialize</span>
+                <span className="terminal-cursor-blink !w-[6px] !h-[14px] !bg-cyber/80" />
+              </span>
+            </button>
+            <span className="cta-hex">0x4445435345432E696E6974</span>
+          </div>
         </div>
-      </div>
-    </section>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+          <div className="scroll-pip">
+            <span className="scroll-text">Scroll</span>
+            <div className="scroll-line" />
+          </div>
+        </div>
+      </section>
+    </>
   )
 }

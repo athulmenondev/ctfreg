@@ -16,20 +16,13 @@ const intelData = [
   },
   {
     id: "02",
-    label: "A/D",
-    title: "Attack-Defense",
-    desc: "Real-time service hardening vs active opponent exploitation.",
-    icon: "◈",
-  },
-  {
-    id: "03",
     label: "REWARDS",
     title: "Prizes & Recognition",
     desc: "Exclusive certifications and a share of the global prize pool.",
     icon: "◎",
   },
   {
-    id: "04",
+    id: "03",
     label: "SCHEDULE",
     title: "12-Hour Intensive",
     desc: "A non-stop marathon from zero-hour to final leaderboard lock.",

@@ -4,7 +4,7 @@ import anime from 'animejs'
 const DEPARTMENTS = [
   'Computer Science & Engineering', 'Electronics & Communication',
   'Electrical & Electronics', 'Mechanical Engineering',
-  'Civil Engineering', 'Information Technology', 'Other',
+  'Civil Engineering', 'Instrumentation & Control Engineering', 'Other',
 ]
 const YEARS = ['1st Year', '2nd Year', '3rd Year', '4th Year']
 
@@ -405,7 +405,7 @@ export default function RegistrationForm({ onSuccess, isUnfolding }) {
                         {/* QR Code Container */}
                         <div className="w-40 h-40 shrink-0 rounded-2xl overflow-hidden border border-white/[0.1] shadow-[0_0_15px_rgba(0,0,0,0.5)] relative">
                           <img 
-                            src="/Athulsmenon-upi.jpg" 
+                            src="/john-qr.jpg" 
                             alt="UPI QR Code" 
                             className="w-full h-full object-cover"
                           />
