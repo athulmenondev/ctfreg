@@ -1,12 +1,10 @@
-import { useEffect, useRef, useState, useCallback } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import anime from 'animejs'
-import WhatsappLink from './WhatsappLink'
 
-export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
+export default function Hero({ isInitializing }) {
   const containerRef = useRef(null)
   const svgRef = useRef(null)
   const btnRef = useRef(null)
-  const btnSvgRef = useRef(null)
   const neonLoopRef = useRef(null)
 
   const [timeStr, setTimeStr] = useState('00:00:00')
@@ -217,73 +215,7 @@ export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
     }
   }, [isInitializing])
 
-  const handleHoverIn = useCallback(() => {
-    if (neonLoopRef.current) {
-      anime.remove('.btn-border-path')
-      neonLoopRef.current = null
-    }
-
-    neonLoopRef.current = anime({
-      targets: '.btn-border-path',
-      strokeDashoffset: [anime.setDashoffset, 0],
-      easing: 'easeInOutSine',
-      duration: 1200,
-      loop: true,
-      direction: 'alternate',
-    })
-
-    anime({
-      targets: '.btn-glow',
-      opacity: [0, 0.6],
-      duration: 400,
-      easing: 'easeOutQuad',
-    })
-
-    anime({
-      targets: '.btn-text',
-      letterSpacing: ['6px', '10px'],
-      duration: 400,
-      easing: 'easeOutQuad',
-    })
-  }, [])
-
-  const handleHoverOut = useCallback(() => {
-    if (neonLoopRef.current) {
-      anime.remove('.btn-border-path')
-      neonLoopRef.current = null
-    }
-
-    anime({
-      targets: '.btn-glow',
-      opacity: 0,
-      duration: 300,
-      easing: 'easeInQuad',
-    })
-
-    anime({
-      targets: '.btn-text',
-      letterSpacing: '6px',
-      duration: 300,
-      easing: 'easeInQuad',
-    })
-  }, [])
-
-  const handleClick = useCallback(() => {
-    anime({
-      targets: '.scanline-overlay',
-      opacity: [0.3, 0],
-      duration: 300,
-      easing: 'easeOutQuad',
-    })
-    anime({
-      targets: btnRef.current,
-      scale: [1, 0.92, 1.05, 0],
-      opacity: [1, 1, 1, 0],
-      duration: 500,
-      easing: 'easeInOutQuart',
-      complete: () => onInitialize()
-    })
-  }, [onInitialize])
+  // Registration is closed — no click/hover handlers needed
 
   const dPath = "M0,5 L60,5 L80,25 L80,65 L60,85 L0,85 Z M18,22 L18,68 L50,68 L62,56 L62,34 L50,22 Z"
   const ePath = "M95,5 L175,5 L175,22 L113,22 L113,37 L160,37 L160,52 L113,52 L113,68 L175,68 L175,85 L95,85 Z"
@@ -557,6 +489,102 @@ export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
           font-family: 'Share Tech Mono', monospace;
         }
 
+        /* ── Registration Closed ── */
+        .reg-closed-block {
+          position: relative;
+          border: 1px solid rgba(255,60,60,0.35);
+          background: rgba(255,30,30,0.04);
+          clip-path: polygon(16px 0%, 100% 0%, calc(100% - 16px) 100%, 0% 100%);
+          min-width: 340px;
+        }
+        .reg-closed-block::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 8px,
+            rgba(255,40,40,0.025) 8px,
+            rgba(255,40,40,0.025) 9px
+          );
+          pointer-events: none;
+        }
+        .reg-closed-block::after {
+          content: '';
+          position: absolute;
+          top: 0; left: 0; right: 0;
+          height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(255,60,60,0.6), transparent);
+        }
+        .reg-closed-inner {
+          display: flex;
+          align-items: center;
+          gap: 18px;
+          padding: 20px 32px;
+        }
+        .reg-closed-icon {
+          position: relative;
+          width: 40px;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+        }
+        .reg-closed-icon-ring {
+          position: absolute;
+          inset: 0;
+          border: 1px solid rgba(255,60,60,0.4);
+          border-radius: 50%;
+          animation: regIconPulse 2s ease-in-out infinite;
+        }
+        @keyframes regIconPulse {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(255,60,60,0); transform: scale(1); }
+          50% { box-shadow: 0 0 12px 4px rgba(255,60,60,0.15); transform: scale(1.05); }
+        }
+        .reg-closed-text-group {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .reg-closed-label {
+          font-family: 'Orbitron', monospace;
+          font-size: clamp(14px, 2vw, 17px);
+          font-weight: 700;
+          color: rgba(255,80,80,0.95);
+          letter-spacing: 0.3em;
+          text-shadow: 0 0 20px rgba(255,60,60,0.4);
+        }
+        .reg-closed-sub {
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 9px;
+          letter-spacing: 4px;
+          color: rgba(255,255,255,0.45);
+          text-transform: uppercase;
+        }
+        .reg-closed-badge {
+          margin-left: auto;
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 8px;
+          letter-spacing: 3px;
+          color: rgba(255,60,60,0.7);
+          border: 1px solid rgba(255,60,60,0.3);
+          padding: 4px 10px;
+          background: rgba(255,30,30,0.06);
+        }
+        .reg-closed-footer {
+          border-top: 1px solid rgba(255,60,60,0.1);
+          padding: 8px 32px;
+          text-align: center;
+        }
+        .reg-closed-hex {
+          font-family: 'Share Tech Mono', monospace;
+          font-size: 8px;
+          letter-spacing: 2px;
+          color: rgba(255,255,255,0.2);
+        }
+
         .scroll-pip {
           display: flex;
           flex-direction: column;
@@ -778,44 +806,29 @@ export default function Hero({ isInitializing, onInitialize, hasRegistered }) {
             ))}
           </div>
 
-          {/* CTA Button */}
-          {!hasRegistered ? (
-            <div ref={btnRef} className="opacity-0 cta-outer">
-              <button
-                onClick={handleClick}
-                onMouseEnter={handleHoverIn}
-                onMouseLeave={handleHoverOut}
-                className="cta-btn init-btn group"
-                data-hover
-              >
-                <svg
-                  ref={btnSvgRef}
-                  className="absolute inset-[-1px] w-[calc(100%+2px)] h-[calc(100%+2px)] pointer-events-none"
-                  preserveAspectRatio="none"
-                >
-                  <rect
-                    className="btn-border-path"
-                    x="1" y="1"
-                    width="calc(100% - 2px)" height="calc(100% - 2px)"
-                    rx="0" ry="0"
-                    fill="none"
-                    stroke="#00ffff"
-                    strokeWidth="1"
-                    strokeDasharray="10 6"
-                  />
-                </svg>
-                <div className="btn-glow absolute inset-0 opacity-0" style={{ background: 'rgba(0,255,255,0.05)' }} />
-                <span className="btn-text relative flex items-center gap-3" style={{ letterSpacing: '0.35em' }}>
-                  <span className="cta-label-prefix">$_</span>
-                  <span>Initialize</span>
-                  <span className="terminal-cursor-blink !w-[6px] !h-[14px] !bg-cyber/80" />
-                </span>
-              </button>
-              <span className="cta-hex">0x4445445345432E696E6974</span>
+          {/* Registration Closed Banner */}
+          <div ref={btnRef} className="opacity-0 cta-outer">
+            <div className="reg-closed-block">
+              <div className="reg-closed-inner">
+                <div className="reg-closed-icon">
+                  <div className="reg-closed-icon-ring" />
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,60,60,0.9)" strokeWidth="2" strokeLinecap="square">
+                    <rect x="3" y="11" width="18" height="11" rx="0" ry="0"/>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    <line x1="12" y1="15" x2="12" y2="17"/>
+                  </svg>
+                </div>
+                <div className="reg-closed-text-group">
+                  <span className="reg-closed-label">ACCESS DENIED</span>
+                  <span className="reg-closed-sub">REGISTRATION CLOSED</span>
+                </div>
+                <div className="reg-closed-badge">LOCKED</div>
+              </div>
+              <div className="reg-closed-footer">
+                <span className="reg-closed-hex">0x52454753545245455F434C4F534544</span>
+              </div>
             </div>
-          ) : (
-            <WhatsappLink />
-          )}
+          </div>
         </div>
 
         {/* Scroll indicator */}
